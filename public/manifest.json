@@ -1,0 +1,76 @@
+{
+  "name": "DockIn — Your Campus, All in One Place",
+  "short_name": "DockIn",
+  "description": "Snaps, chats, groups and campus life for Bennett students — attendance and academics too.",
+  "start_url": "/dashboard",
+  "id": "/dashboard",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone"],
+  "orientation": "portrait",
+  "background_color": "#F5F3FF",
+  "theme_color": "#7C3AED",
+  "lang": "en",
+  "categories": ["education", "social", "productivity"],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Today's Attendance",
+      "short_name": "Attendance",
+      "url": "/attendance",
+      "icons": [{ "src": "/icons/attendance.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Friends",
+      "short_name": "Friends",
+      "url": "/friends",
+      "icons": [{ "src": "/icons/finance.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Chats",
+      "short_name": "Chats",
+      "url": "/chats",
+      "icons": [{ "src": "/icons/academic.png", "sizes": "96x96" }]
+    }
+  ],
+  "widgets": [
+    {
+      "name": "DockIn Today",
+      "description": "Today's attendance, spend and classes at a glance",
+      "tag": "pulse-today",
+      "template": "pulse-today-widget",
+      "ms_ac_template": "/widgets/pulse-today.json",
+      "data": "/api/widgets/today",
+      "type": "application/json",
+      "screenshots": [],
+      "icons": [{ "src": "/icons/widget.png", "sizes": "192x192" }],
+      "backgrounds": []
+    }
+  ]
+}

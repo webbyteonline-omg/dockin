@@ -1,0 +1,10 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.pulse.bennett",
+      "sha256_cert_fingerprints": ["REPLACE_AFTER_PWABUILDER_APK_GENERATION"]
+    }
+  }
+]

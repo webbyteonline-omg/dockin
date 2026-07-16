@@ -1,0 +1,208 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   Theme system — every surface color is an RGB-triple variable
+   so Tailwind opacity modifiers (bg-card/90 etc.) keep working.
+   Themes: .light (default) | .dark | .amoled on <html>.
+   Flat design system — no soft/clay shadows, just borders + a
+   single low drop-shadow, per the DockIn UI reference (Sunset
+   Orange x Magenta, ink #14121C, bg #F5F3FA).
+   ============================================================ */
+:root,
+html.light {
+  color-scheme: light;
+  --bg: 245 243 250; /* #F5F3FA */
+  --card: 255 255 255; /* #FFFFFF */
+  --card-hover: 248 246 252;
+  --line: 20 18 28; /* #14121C — used at low alpha (border-line/8 etc.) */
+  --input: 245 243 250;
+  --ink: 20 18 28; /* #14121C, solid text */
+  --ink-dim: 20 18 28; /* rendered at ~55% alpha via Tailwind's dim/DEFAULT opacity, see below */
+  --ink-faint: 20 18 28; /* rendered at ~35% alpha */
+  --chart-bar: 230 228 238;
+}
+
+html.dark {
+  color-scheme: dark;
+  --bg: 10 9 13; /* #0A090D */
+  --card: 20 18 28; /* #14121C */
+  --card-hover: 28 26 38;
+  --line: 255 255 255; /* used at low alpha for dark borders */
+  --input: 28 26 38;
+  --ink: 255 255 255;
+  --ink-dim: 255 255 255;
+  --ink-faint: 255 255 255;
+  --chart-bar: 47 44 60;
+}
+
+html.amoled {
+  color-scheme: dark;
+  --bg: 0 0 0;
+  --card: 10 9 13;
+  --card-hover: 18 16 22;
+  --line: 255 255 255;
+  --input: 16 14 20;
+  --ink: 255 255 255;
+  --ink-dim: 255 255 255;
+  --ink-faint: 255 255 255;
+  --chart-bar: 34 32 40;
+}
+
+@layer utilities {
+  /* Flat card — white surface, hairline border, one soft low shadow. No
+     double/inset shadows — this is the flat pop-art look, not claymorphism. */
+  .flat-card {
+    background: rgb(var(--card));
+    border: 1.5px solid rgb(var(--line) / 0.08);
+    box-shadow: 0 10px 30px rgb(var(--line) / 0.06);
+  }
+  /* Same card, no shadow — for dense list rows where a shadow would be noise. */
+  .flat-card-plain {
+    background: rgb(var(--card));
+    border: 1.5px solid rgb(var(--line) / 0.08);
+  }
+  /* DockIn signature gradient surface (buttons, badges, avatar rings). */
+  .dockin-gradient {
+    background: linear-gradient(135deg, #ff6b35, #ff2d78);
+  }
+  .dockin-gradient-text {
+    background: linear-gradient(135deg, #ff6b35, #ff2d78);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  /* Dark hero/feature surface (who's-free card, group hero, splash bg). */
+  .dockin-dark {
+    background: linear-gradient(120deg, #14121c 55%, #3a1440 100%);
+  }
+  /* Diagonal variant used behind dotted-pattern hero cards (Groups). */
+  .dockin-dark-diag {
+    background: linear-gradient(135deg, #14121c 50%, #3a1440 100%);
+  }
+  /* Rotated sticker-style badge (LIVE / NEW / HOT tags). */
+  .sticker-badge {
+    transform: rotate(-3deg);
+  }
+  /* Dotted background used behind chat threads and dark hero cards. */
+  .dotted-bg {
+    background-image: radial-gradient(rgba(20, 18, 26, 0.05) 1.5px, transparent 1.5px);
+    background-size: 18px 18px;
+  }
+  .dotted-bg-dark {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1.5px, transparent 1.5px);
+    background-size: 16px 16px;
+  }
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Removes the ~300ms tap-delay on iOS Safari and kills the grey flash
+   highlight on tap for every interactive element. */
+button,
+a,
+[role="button"],
+input,
+select,
+textarea {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  @apply bg-bg text-ink antialiased;
+  overscroll-behavior-y: contain;
+}
+
+/* Thin, unobtrusive scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(var(--line) / 0.2) transparent;
+}
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgb(var(--line) / 0.2);
+  border-radius: 3px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: none;
+  cursor: pointer;
+}
+html.dark input[type="date"]::-webkit-calendar-picker-indicator,
+html.dark input[type="time"]::-webkit-calendar-picker-indicator,
+html.amoled input[type="date"]::-webkit-calendar-picker-indicator,
+html.amoled input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.85);
+}
+
+/* iOS/Android PWA safe areas.
+   .pt-safe is additive (env() + 16px), not a replacement for whatever
+   padding-top a page already has — it's meant to be combined with a
+   page's own spacing utility, never used alone, so status-bar / notch
+   insets never eat into a page's intended top spacing. */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .pb-safe {
+    padding-bottom: calc(env(safe-area-inset-bottom) + 0.5rem);
+  }
+  .pt-safe {
+    padding-top: calc(env(safe-area-inset-top) + 16px);
+  }
+}
+@supports not (padding: env(safe-area-inset-bottom)) {
+  .pt-safe {
+    padding-top: 16px;
+  }
+}
+
+/* ============================================================
+   Leaflet — shared by CampusMap.tsx, FriendsMap.tsx, MapView.tsx.
+   Imported globally (once) rather than per-component so every map
+   on the site gets identical themed popups without each component
+   needing its own CSS import.
+   ============================================================ */
+@import "leaflet/dist/leaflet.css";
+
+.pulse-popup .leaflet-popup-content-wrapper {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+.pulse-popup .leaflet-popup-content {
+  margin: 0 !important;
+}
+.pulse-popup .leaflet-popup-tip {
+  background: #14121c !important;
+}
+.leaflet-container {
+  background: #f5f3fa !important;
+}
