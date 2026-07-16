@@ -8,10 +8,23 @@ const PUBLIC_PATHS = ["/welcome", "/login", "/signup", "/offline"];
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({ request });
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  // Fail OPEN, not closed: if Supabase env vars are missing/malformed, or the
+  // auth check itself throws (e.g. a transient Supabase outage, a client
+  // version incompatibility), letting the request through un-redirected is
+  // far better than 500ing every single page on the site. Page-level auth
+  // guards (AuthListener / useAuthStore) still catch unauthenticated access
+  // client-side, so this is a redirect optimization, not the only defense.
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.error("middleware: missing NEXT_PUBLIC_SUPABASE_URL/ANON_KEY — skipping auth redirect");
+    return response;
+  }
+
+  let user: { id: string } | null = null;
+  try {
+    const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
       cookies: {
         getAll() {
           return request.cookies.getAll();
@@ -24,12 +37,14 @@ export async function middleware(request: NextRequest) {
           );
         },
       },
-    }
-  );
+    });
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    const { data } = await supabase.auth.getUser();
+    user = data.user;
+  } catch (err) {
+    console.error("middleware: supabase.auth.getUser() threw, skipping auth redirect", err);
+    return response;
+  }
 
   const { pathname } = request.nextUrl;
   const isPublic = PUBLIC_PATHS.some((p) => pathname.startsWith(p));
