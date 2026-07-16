@@ -12,12 +12,18 @@ const nextConfig: NextConfig = {
     removeConsole: process.env.NODE_ENV === "production" ? { exclude: ["error", "warn"] } : false,
   },
   experimental: {
-    // Inlines critical CSS and defers the rest — fewer render-blocking
-    // requests on first paint.
-    optimizeCss: true,
     // Tree-shakes these libraries so only the icons/components actually
     // used are bundled instead of the whole package.
-    optimizePackageImports: ["recharts", "framer-motion", "lucide-react", "@supabase/supabase-js"],
+    //
+    // NOTE: `optimizeCss` (via critters) was removed here — critters reads
+    // files from disk using __dirname-relative paths, and Next's build
+    // pipeline was pulling that code path into the Edge middleware bundle,
+    // which doesn't have __dirname and crashed every request with
+    // `ReferenceError: __dirname is not defined` (MIDDLEWARE_INVOCATION_FAILED
+    // on Vercel). Also dropped @supabase/supabase-js from
+    // optimizePackageImports for the same reason — its barrel-file
+    // tree-shake transform was implicated in the same crash.
+    optimizePackageImports: ["recharts", "framer-motion", "lucide-react"],
   },
   // Empty object opts this config into Turbopack's dev/build pipeline
   // (falls back to webpack automatically when Turbopack isn't invoked).
