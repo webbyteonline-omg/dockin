@@ -7,6 +7,7 @@ import { RealtimeProvider } from "@/lib/realtime";
 import { SplashScreen } from "@/components/SplashScreen";
 import { useAuthStore } from "@/store/authStore";
 import { useSettingsStore } from "@/store/settingsStore";
+import { useStreakSync } from "@/hooks/useStreak";
 import { PROFILE_COLUMNS } from "@/lib/supabase/columns";
 
 function ServiceWorkerRegistrar() {
@@ -146,6 +147,11 @@ function ThemeSync() {
   return null;
 }
 
+function StreakSyncer() {
+  useStreakSync();
+  return null;
+}
+
 /** Once per browser session, not once per app-open — sessionStorage clears
  * on tab close, so returning users within the same tab session never see it
  * again, but a fresh visit always does. */
@@ -186,6 +192,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <AuthListener />
       <DashboardPrefetcher />
       <ThemeSync />
+      <StreakSyncer />
       <RealtimeProvider>{children}</RealtimeProvider>
       {/* Overlay, not a replacement — children mount and start resolving
        * auth/onboarding underneath immediately, so nothing is delayed by

@@ -3,7 +3,7 @@
 // lets Postgres serve more queries straight from an index-only scan.
 
 export const PROFILE_COLUMNS =
-  "id,username,display_name,avatar_url,pulse_score,privacy_steps,privacy_location,privacy_attendance,privacy_finance,privacy_friends_only,onboarded,created_at";
+  "id,username,display_name,avatar_url,avatar_url_3d,pulse_score,privacy_steps,privacy_location,privacy_attendance,privacy_finance,privacy_friends_only,onboarded,created_at";
 
 export const USER_STATS_COLUMNS =
   "user_id,steps_week,mood_avg_week,attendance_pct,budget_remaining_pct,pulse_score,streak,last_open,week_start,updated_at";

@@ -147,6 +147,8 @@ export type UserProfile = {
   username: string;
   display_name: string | null;
   avatar_url: string | null;
+  /** Ready Player Me .glb model URL — full-body customizable 3D avatar, rendered on Home. */
+  avatar_url_3d: string | null;
   pulse_score: number;
   privacy_steps: boolean;
   privacy_location: boolean;

@@ -72,21 +72,17 @@ export default function WelcomePage() {
         ✦
       </div>
 
-      {/* Top pills */}
+      {/* Top pill */}
       <div className="absolute top-16 left-6 right-6 flex flex-col gap-2.5 pt-safe">
-        <div className="self-start bg-accent rounded-pill px-4 py-2.5 text-[13px] font-extrabold text-[#14121C] -rotate-3">
-          Mood: buried in assignments
-        </div>
-        <div className="self-start bg-white rounded-pill px-4 py-2.5 text-[13px] font-extrabold text-[#14121C] flex items-center gap-1.5 rotate-1">
+        <div className="self-start bg-white rounded-pill px-4 py-2.5 text-[13px] font-extrabold text-[#14121C] flex items-center gap-1.5 -rotate-3">
           <span className="w-[7px] h-[7px] rounded-full bg-success inline-block" />
-          3 friends online · 2 new snaps
+          Your campus, always on
         </div>
       </div>
 
       {/* Bottom content */}
       <div className="absolute bottom-14 left-6 right-6 flex flex-col gap-3.5 pb-safe">
         <div>
-          <div className="font-display font-bold text-xl text-white/65">Hey, Ananya</div>
           <div
             className="font-display font-black text-[46px] leading-none -tracking-[0.03em] mt-1 bg-clip-text text-transparent"
             style={{

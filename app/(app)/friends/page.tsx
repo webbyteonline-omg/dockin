@@ -13,7 +13,6 @@ import {
   useUserSearch,
 } from "@/hooks/useFriends";
 import { useIsOnline } from "@/lib/realtime";
-import { vibeStatus } from "@/lib/utils";
 
 function OnlineFriend({ id, name }: { id: string; name: string }) {
   const online = useIsOnline(id);
@@ -21,7 +20,7 @@ function OnlineFriend({ id, name }: { id: string; name: string }) {
   return (
     <div className="flex flex-col items-center gap-1.5 shrink-0 w-[66px]">
       <Avatar name={name} size={52} online />
-      <div className="text-[11px] font-semibold text-ink text-center">{vibeStatus(id)}</div>
+      <div className="text-[11px] font-semibold text-success text-center">Online</div>
     </div>
   );
 }
